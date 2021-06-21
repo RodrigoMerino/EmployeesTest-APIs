@@ -37,19 +37,19 @@ namespace Employees.Controllers
         [HttpGet]
         public IActionResult GetAllPaginated(int PageNumber, int PageSize)
         {
-            var orders = _employeeService.GetAllPaginated(PageNumber, PageSize);
+            var employees = _employeeService.GetAllPaginated(PageNumber, PageSize);
 
 
             var metadata = new Metadata()
             {
-                TotalCount = orders.TotalCount,
-                PageSize = orders.PageSize,
-                CurrentPage = orders.CurrentPage,
-                TotalPages = orders.TotalPages
+                TotalCount = employees.TotalCount,
+                PageSize = employees.PageSize,
+                CurrentPage = employees.CurrentPage,
+                TotalPages = employees.TotalPages
 
             };
 
-            var response = new ApiGenericResponse<IEnumerable<Employee>>(orders)
+            var response = new ApiGenericResponse<IEnumerable<Employee>>(employees)
             {
                 Meta = metadata
             };

@@ -16,6 +16,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Core.Services;
+using Newtonsoft.Json;
+
 namespace Employees
 {
     public class Startup
@@ -34,8 +36,7 @@ namespace Employees
             {
                 options.AddPolicy("CorsPolicy", x => x.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().WithExposedHeaders("X-Pagination"));
             });
-            services.AddControllers();
-            services.AddControllers().AddNewtonsoftJson();
+
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddTransient<IEmployeeService, EmployeeService>();
@@ -49,7 +50,19 @@ namespace Employees
             //comment: connection db
             services.AddDbContext<EmployeesDBContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("TestConnection")));
+
+            services.AddControllers().AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+
+            });
+            services.AddMvc(option => option.EnableEndpointRouting = false)
+       .AddNewtonsoftJson(options =>
+                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
+       .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
         }
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -22,13 +22,14 @@ namespace Infraestructure.Repositories
 
         public async Task CreateEmployee(Employee employee)
         {
+
             await _context.Employees.AddAsync(employee);
             await _context.SaveChangesAsync();
         }
 
         public Pagination<Employee> GetAllPaginated(int PageNumber, int PageSize)
         {
-            var data = _context.Employees.ToList();
+            var data = _context.Employees.Include(x => x.IdAreaNavigation).Include(x => x.IdSubareaNavigation).OrderByDescending(c => c.Id);
 
             var pagedData = Pagination<Employee>.Create(data, PageNumber, PageSize);
             return pagedData;

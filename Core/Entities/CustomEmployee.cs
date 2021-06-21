@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using System.Text;
 
 namespace Core.Entities
 {
-    public partial class Employee
+    public class CustomEmployee
     {
+
+
         public int Id { get; set; }
         public string TypeDocument { get; set; }
         public string Document { get; set; }
@@ -14,9 +16,5 @@ namespace Core.Entities
         public int? IdArea { get; set; }
         public int? IdSubarea { get; set; }
 
-        //public string area_name { get; set; }
-        //public string subarea_name { get; set; }
-        public virtual Area IdAreaNavigation { get; set; }
-        public virtual Subarea IdSubareaNavigation { get; set; }
     }
 }

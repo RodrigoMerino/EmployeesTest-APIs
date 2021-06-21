@@ -14,5 +14,6 @@ namespace Core.DTOs
         public int? IdArea { get; set; }
         public int? IdSubarea { get; set; }
 
+
     }
 }

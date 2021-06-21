@@ -7,11 +7,11 @@ using System.Text;
 
 namespace Infraestructure.Data.Configurations
 {
-    class EmployeeConfig : IEntityTypeConfiguration<Employee>
+    class CustomEmployeeConfig : IEntityTypeConfiguration<CustomEmployee>
     {
-        public void Configure(EntityTypeBuilder<Employee> builder)
+
+        public void Configure(EntityTypeBuilder<CustomEmployee> builder)
         {
-            builder.ToTable("employees");
 
             builder.Property(e => e.Id).HasColumnName("id");
 
@@ -41,15 +41,7 @@ namespace Infraestructure.Data.Configurations
                  .HasMaxLength(100)
                  .IsUnicode(false);
 
-            builder.HasOne(d => d.IdAreaNavigation)
-                 .WithMany(p => p.Employees)
-                 .HasForeignKey(d => d.IdArea)
-                 .HasConstraintName("FK_employees_areas");
 
-            builder.HasOne(d => d.IdSubareaNavigation)
-                 .WithMany(p => p.Employees)
-                 .HasForeignKey(d => d.IdSubarea)
-                 .HasConstraintName("FK_employees_subareas");
         }
     }
 }
