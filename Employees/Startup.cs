@@ -17,6 +17,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Core.Services;
 using Newtonsoft.Json;
+using Microsoft.OpenApi.Models;
+using System.Reflection;
+using System.IO;
 
 namespace Employees
 {
@@ -61,6 +64,14 @@ namespace Employees
        .AddNewtonsoftJson(options =>
                  options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
        .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+
+            services.AddSwaggerGen(doc =>
+            {
+                doc.SwaggerDoc("v1", new OpenApiInfo { Title = "Employee API", Version = "v1" });
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                doc.IncludeXmlComments(xmlPath);
+            });
         }
 
 
@@ -75,7 +86,13 @@ namespace Employees
             }
 
             app.UseHttpsRedirection();
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Employee API");
+                options.RoutePrefix = string.Empty;
 
+            });
             app.UseRouting();
 
             app.UseAuthorization();

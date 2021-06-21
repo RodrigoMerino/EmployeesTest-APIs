@@ -26,14 +26,13 @@ namespace Employees.Controllers
             _employeeService = employeeService;
             _mapper = mapper;
         }
-        //[HttpGet]
-        //public async Task<IActionResult> GetEmployees()
-        //{
-        //    var employess = await _employeeService.GetEmployees();
-        //    var employeeDto = _mapper.Map<IEnumerable<EmployeeDto>>(employess);
-        //    var response = new ApiGenericResponse<IEnumerable<EmployeeDto>>(employeeDto);
-        //    return Ok(response);
-        //}
+
+        /// <summary>
+        /// retrieve all paginated
+        /// </summary>
+        /// <param name="PageNumber">current page</param>
+        /// <param name="PageSize">total of rows per page</param>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult GetAllPaginated(int PageNumber, int PageSize)
         {
@@ -99,6 +98,14 @@ namespace Employees.Controllers
             return Ok(response);
 
         }
+
+        [HttpDelete]
+        public async Task<IActionResult> createEmployee(int id)
+        {
+            var employee = await _employeeService.DeleteEmployee(id);
+            return Ok(employee);
+        }
+
     }
 
 

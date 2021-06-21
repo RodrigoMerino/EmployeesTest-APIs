@@ -21,9 +21,9 @@ namespace Core.Services
 
         }
 
-        public Task<bool> DeleteEmployee(int id)
+        public async Task<bool> DeleteEmployee(int id)
         {
-            throw new NotImplementedException();
+            return await _employeeRepository.DeleteEmployee(id);
         }
 
         public Pagination<Employee> GetAllPaginated(int PageNumber, int PageSize)

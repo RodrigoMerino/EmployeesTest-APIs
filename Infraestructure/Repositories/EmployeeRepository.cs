@@ -27,6 +27,14 @@ namespace Infraestructure.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task<bool> DeleteEmployee(int id)
+        {
+            var employeeId = await GetEmployee(id);
+            _context.Employees.Remove(employeeId);
+            var row = await _context.SaveChangesAsync();
+            return row > 0;
+        }
+
         public Pagination<Employee> GetAllPaginated(int PageNumber, int PageSize)
         {
             var data = _context.Employees.Include(x => x.IdAreaNavigation).Include(x => x.IdSubareaNavigation).OrderByDescending(c => c.Id);
@@ -49,7 +57,12 @@ namespace Infraestructure.Repositories
 
         public async Task<bool> UpdateEmployee(Employee employee)
         {
-            _context.Employees.FromSqlRaw<Employee>("updateEmployee ({0}, {1}, {2}, {3}, {4})", employee.Id, employee.TypeDocument, employee.Document, employee.Name, employee.LastName);
+            var currentPost = await GetEmployee(employee.Id);
+            currentPost.Name = employee.Name;
+            currentPost.LastName = employee.LastName;
+            currentPost.IdArea = employee.IdArea;
+            currentPost.IdSubarea = employee.IdSubarea;
+            currentPost.Document = employee.Document;
             int rows = await _context.SaveChangesAsync();
             return rows > 0;
         }

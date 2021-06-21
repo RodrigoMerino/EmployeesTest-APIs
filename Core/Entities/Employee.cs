@@ -14,8 +14,6 @@ namespace Core.Entities
         public int? IdArea { get; set; }
         public int? IdSubarea { get; set; }
 
-        //public string area_name { get; set; }
-        //public string subarea_name { get; set; }
         public virtual Area IdAreaNavigation { get; set; }
         public virtual Subarea IdSubareaNavigation { get; set; }
     }
